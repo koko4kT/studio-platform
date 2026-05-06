@@ -268,7 +268,7 @@ function RatingModal({ session, onClose }) {
         {step === "done" && (<>
           <div style={s.modalEmoji}>✅</div>
           <div style={s.modalTitle}>Merci !</div>
-          <div style={s.modalSub}>Ton avis aide la communauté STÜDIO.</div>
+          <div style={s.modalSub}>Ton avis aide la communauté  STÜDIO.</div>
         </>)}
       </div>
     </div>
