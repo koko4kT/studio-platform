@@ -1,31 +1,4 @@
 import { useState } from "react";
-const SECRET_CODE = "studio2026";
-
-function PasswordGate({ onUnlock }) {
-  const [input, setInput] = useState("");
-  const [error, setError] = useState(false);
-  return (
-    <div style={{ minHeight: "100vh", background: "#080808", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ textAlign: "center", padding: 40 }}>
-        <div style={{ fontSize: 32, fontWeight: 900, letterSpacing: 6, color: "#fff", marginBottom: 8 }}>
-          <span style={{ color: "#ff3b3b" }}>●</span> STÜDIO
-        </div>
-        <div style={{ fontSize: 12, color: "#555", letterSpacing: 3, textTransform: "uppercase", marginBottom: 40, fontFamily: "DM Sans, sans-serif" }}>Accès privé</div>
-        <input
-          style={{ background: "#0f0f0f", border: `1px solid ${error ? "#ff3b3b" : "#222"}`, color: "#fff", padding: "14px 20px", fontSize: 14, width: 260, outline: "none", textAlign: "center", letterSpacing: 4, fontFamily: "DM Sans, sans-serif", display: "block", marginBottom: 12 }}
-          type="password" placeholder="Code d'accès" value={input}
-          onChange={e => { setInput(e.target.value); setError(false); }}
-          onKeyDown={e => { if (e.key === "Enter") { if (input === SECRET_CODE) onUnlock(); else setError(true); } }}
-        />
-        {error && <div style={{ color: "#ff3b3b", fontSize: 12, fontFamily: "DM Sans, sans-serif", marginBottom: 12 }}>Code incorrect</div>}
-        <button style={{ background: "#ff3b3b", color: "#fff", border: "none", padding: "14px 40px", fontSize: 13, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", cursor: "pointer", width: 260 }}
-          onClick={() => { if (input === SECRET_CODE) onUnlock(); else setError(true); }}>
-          Entrer →
-        </button>
-      </div>
-    </div>
-  );
-}
 
 // ─── COMMISSION PALIERS N-1 ───────────────────────────────────────────────────
 function getCommissionRate(h) {
@@ -309,11 +282,10 @@ export default function App() {
   const [engTab, setEngTab] = useState("profil");
   const [engSavedMsg, setEngSavedMsg] = useState(false);
   const [newDispo, setNewDispo] = useState({ date: DAYS[0], startH: "10", endH: "18" });
-const [unlocked, setUnlocked] = useState(false);
+
   const unreadCount = notifs.filter(n => !n.read).length;
   const currentRate = getCommissionRate(dashStudio.hoursLastMonth);
   const nextPalier = dashStudio.hoursLastMonth >= 150 ? null : dashStudio.hoursLastMonth >= 50 ? 150 : 50;
-  if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />;
 
   // Filtrage studios
   const filtered = studios.filter(st => {
