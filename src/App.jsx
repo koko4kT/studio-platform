@@ -310,10 +310,10 @@ export default function App() {
   const [engSavedMsg, setEngSavedMsg] = useState(false);
   const [newDispo, setNewDispo] = useState({ date: DAYS[0], startH: "10", endH: "18" });
 const [unlocked, setUnlocked] = useState(false);
-if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />;
   const unreadCount = notifs.filter(n => !n.read).length;
   const currentRate = getCommissionRate(dashStudio.hoursLastMonth);
   const nextPalier = dashStudio.hoursLastMonth >= 150 ? null : dashStudio.hoursLastMonth >= 50 ? 150 : 50;
+  if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />;
 
   // Filtrage studios
   const filtered = studios.filter(st => {
