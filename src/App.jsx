@@ -13,17 +13,13 @@ function PasswordGate({ onUnlock }) {
         <div style={{ fontSize: 12, color: "#555", letterSpacing: 3, textTransform: "uppercase", marginBottom: 40, fontFamily: "DM Sans, sans-serif" }}>Accès privé</div>
         <input
           style={{ background: "#0f0f0f", border: `1px solid ${error ? "#ff3b3b" : "#222"}`, color: "#fff", padding: "14px 20px", fontSize: 14, width: 260, outline: "none", textAlign: "center", letterSpacing: 4, fontFamily: "DM Sans, sans-serif", display: "block", marginBottom: 12 }}
-          type="password"
-          placeholder="Code d'accès"
-          value={input}
+          type="password" placeholder="Code d'accès" value={input}
           onChange={e => { setInput(e.target.value); setError(false); }}
           onKeyDown={e => { if (e.key === "Enter") { if (input === SECRET_CODE) onUnlock(); else setError(true); } }}
         />
         {error && <div style={{ color: "#ff3b3b", fontSize: 12, fontFamily: "DM Sans, sans-serif", marginBottom: 12 }}>Code incorrect</div>}
-        <button
-          style={{ background: "#ff3b3b", color: "#fff", border: "none", padding: "14px 40px", fontSize: 13, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", cursor: "pointer", width: 260 }}
-          onClick={() => { if (input === SECRET_CODE) onUnlock(); else setError(true); }}
-        >
+        <button style={{ background: "#ff3b3b", color: "#fff", border: "none", padding: "14px 40px", fontSize: 13, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", cursor: "pointer", width: 260 }}
+          onClick={() => { if (input === SECRET_CODE) onUnlock(); else setError(true); }}>
           Entrer →
         </button>
       </div>
@@ -31,6 +27,7 @@ function PasswordGate({ onUnlock }) {
   );
 }
 
+// ─── COMMISSION PALIERS N-1 ───────────────────────────────────────────────────
 function getCommissionRate(h) {
   if (h >= 150) return 0.10;
   if (h >= 50) return 0.12;
@@ -45,12 +42,16 @@ function getSlotPrice(studio, slot) {
   const base = getPriceDisplayed(studio.netPrice, rate);
   return mode === "autonomous" ? Math.round(base * 0.70) : base;
 }
+
+// ─── DÉLAI DE RÉPONSE DYNAMIQUE INGÉ ─────────────────────────────────────────
+// hoursUntilSession = heures avant la session
 function getEngResponseDelay(hoursUntilSession) {
   if (hoursUntilSession > 48) return { hours: 12, label: "12h pour répondre" };
   if (hoursUntilSession > 12) return { hours: 4, label: "4h pour répondre" };
   return { hours: 2, label: "2h pour répondre" };
 }
 
+// ─── DONNÉES ──────────────────────────────────────────────────────────────────
 const DAYS = ["Auj.", "Dem.", "Mer 8", "Jeu 9", "Ven 10", "Sam 11", "Dim 12", "Lun 13", "Mar 14", "Mer 15", "Jeu 16", "Ven 17", "Sam 18", "Dim 19"];
 
 const INITIAL_STUDIOS = [
@@ -123,7 +124,8 @@ const FREELANCE_ENGINEERS = [
   {
     id: 1, name: "DJ Kryz", specialty: ["Mixage", "Enregistrement"], genres: ["Trap", "Drill", "Afro"],
     rate: 40, rating: 4.9, reviewCount: 67, acceptanceRate: 97,
-    avatar: "K", color: "#ff3b3b", city: "Paris", radiusKm: 20, minNoticeHours: 2,
+    avatar: "K", color: "#ff3b3b",
+    city: "Paris", radiusKm: 20, minNoticeHours: 2,
     bio: "Ingé son depuis 10 ans. Spécialisé dans le rap et les musiques urbaines.",
     reviewsData: [
       { id: 1, artist: "Lil Kev", rating: 5, comment: "Kryz transforme un enregistrement basique en banger.", date: "Il y a 3 jours" },
@@ -135,33 +137,43 @@ const FREELANCE_ENGINEERS = [
       { id: 3, date: "Jeu 9", time: "16h - 22h", hoursUntil: 80 },
       { id: 4, date: "Sam 11", time: "10h - 16h", hoursUntil: 98 },
     ],
-    sessions: [{ id: 1, artist: "Lil Kev", date: "Auj.", time: "10h-13h", location: "NOIR STUDIO", status: "confirmed", hours: 3 }],
-    pendingRequests: [{ id: 1, artist: "Nox B.", date: "Dem.", time: "14h-17h", location: "Zone 93 — Seine-Saint-Denis", hours: 3, hoursUntil: 30, status: "pending" }],
+    sessions: [
+      { id: 1, artist: "Lil Kev", date: "Auj.", time: "10h-13h", location: "NOIR STUDIO", status: "confirmed", hours: 3 },
+    ],
+    pendingRequests: [
+      { id: 1, artist: "Nox B.", date: "Dem.", time: "14h-17h", location: "Zone 93 — Seine-Saint-Denis", hours: 3, hoursUntil: 30, status: "pending" },
+    ],
   },
   {
     id: 2, name: "Skizo", specialty: ["Mixage", "Mastering", "Beatmaking"], genres: ["Rap FR", "Drill", "Boom-bap"],
     rate: 35, rating: 5.0, reviewCount: 89, acceptanceRate: 99,
-    avatar: "S", color: "#00e5ff", city: "Seine-Saint-Denis", radiusKm: 15, minNoticeHours: 4,
+    avatar: "S", color: "#00e5ff",
+    city: "Seine-Saint-Denis", radiusKm: 15, minNoticeHours: 4,
     bio: "8 ans d'expérience. Je mets l'artiste à l'aise pour tirer le meilleur de chaque session.",
-    reviewsData: [{ id: 1, artist: "Nino", rating: 5, comment: "Le meilleur. Sans discussion.", date: "Il y a 2 jours" }],
+    reviewsData: [
+      { id: 1, artist: "Nino", rating: 5, comment: "Le meilleur. Sans discussion.", date: "Il y a 2 jours" },
+    ],
     availabilities: [
       { id: 1, date: "Dem.", time: "10h - 14h", hoursUntil: 26 },
       { id: 2, date: "Mer 8", time: "16h - 22h", hoursUntil: 56 },
       { id: 3, date: "Ven 10", time: "18h - 23h", hoursUntil: 82 },
     ],
-    sessions: [], pendingRequests: [],
+    sessions: [],
+    pendingRequests: [],
   },
   {
     id: 3, name: "Lena M.", specialty: ["Production", "Enregistrement"], genres: ["R&B", "Soul", "Pop"],
     rate: 45, rating: 4.7, reviewCount: 43, acceptanceRate: 92,
-    avatar: "L", color: "#f5a623", city: "Lyon", radiusKm: 10, minNoticeHours: 2,
+    avatar: "L", color: "#f5a623",
+    city: "Lyon", radiusKm: 10, minNoticeHours: 2,
     bio: "Productrice et ingé son. 6 ans avec des artistes R&B et pop.",
     reviewsData: [],
     availabilities: [
       { id: 1, date: "Auj.", time: "18h - 22h", hoursUntil: 10 },
       { id: 2, date: "Sam 11", time: "12h - 18h", hoursUntil: 100 },
     ],
-    sessions: [], pendingRequests: [],
+    sessions: [],
+    pendingRequests: [],
   },
 ];
 
@@ -205,6 +217,7 @@ function calcPricing(studio, slot, freelanceEng = null) {
   return { studioTotal, studioDeposit, studioRemaining, engTotal, engDeposit, grandTotal: studioTotal + engTotal, grandDeposit: studioDeposit + engDeposit, grandRemaining: studioRemaining };
 }
 
+// ─── COMPOSANTS ───────────────────────────────────────────────────────────────
 function StarRating({ value, onChange, size = 28 }) {
   const [hovered, setHovered] = useState(0);
   return (
@@ -231,9 +244,13 @@ function RatingModal({ session, onClose }) {
         {step === "rate" && (<>
           <div style={s.modalEmoji}>🎙️</div>
           <div style={s.modalTitle}>Alors, ta session ?</div>
-          <div style={s.modalSub}>{session.hasFreelanceEng ? `Comment s'est passé ton enregistrement avec ${session.engName} ?` : `Comment s'est passée ta session chez ${session.studioName} ?`}</div>
+          <div style={s.modalSub}>
+            {session.hasFreelanceEng ? `Comment s'est passé ton enregistrement avec ${session.engName} ?` : `Comment s'est passée ta session chez ${session.studioName} ?`}
+          </div>
           <StarRating value={rating} onChange={setRating} size={44} />
-          <button style={{ ...s.ctaPrimary, width: "100%", marginTop: 24, opacity: rating > 0 ? 1 : 0.4 }} onClick={() => rating > 0 && setStep("comment")}>Valider ma note →</button>
+          <button style={{ ...s.ctaPrimary, width: "100%", marginTop: 24, opacity: rating > 0 ? 1 : 0.4 }} onClick={() => rating > 0 && setStep("comment")}>
+            Valider ma note →
+          </button>
         </>)}
         {step === "comment" && (<>
           <div style={s.modalEmoji}>✍️</div>
@@ -245,12 +262,17 @@ function RatingModal({ session, onClose }) {
             <button style={s.ctaSecondary} onClick={() => { setStep("done"); setTimeout(onClose, 1500); }}>Passer</button>
           </div>
         </>)}
-        {step === "done" && (<><div style={s.modalEmoji}>✅</div><div style={s.modalTitle}>Merci !</div><div style={s.modalSub}>Ton avis aide la communauté STÜDIO.</div></>)}
+        {step === "done" && (<>
+          <div style={s.modalEmoji}>✅</div>
+          <div style={s.modalTitle}>Merci !</div>
+          <div style={s.modalSub}>Ton avis aide la communauté STÜDIO.</div>
+        </>)}
       </div>
     </div>
   );
 }
 
+// ─── APP ──────────────────────────────────────────────────────────────────────
 export default function App() {
   const [studios, setStudios] = useState(INITIAL_STUDIOS);
   const [engineers, setEngineers] = useState(FREELANCE_ENGINEERS);
@@ -270,25 +292,30 @@ export default function App() {
   const [showNotifs, setShowNotifs] = useState(false);
   const [ratingSession, setRatingSession] = useState(null);
   const [engStatus, setEngStatus] = useState(null);
-  const [showEngBasket, setShowEngBasket] = useState(false);
+  const [showEngBasket, setShowEngBasket] = useState(false); // panier ingé sur créneau autonomie
+
+  // Studio dashboard
   const [dashStudio, setDashStudio] = useState(INITIAL_STUDIOS[0]);
   const [dashTab, setDashTab] = useState("infos");
   const [newSlot, setNewSlot] = useState({ date: DAYS[0], startH: "10", endH: "13", engineerMode: null });
   const [savedMsg, setSavedMsg] = useState(false);
   const [cashDisclaimerShown, setCashDisclaimerShown] = useState(false);
-  const [engProfile, setEngProfile] = useState({ ...FREELANCE_ENGINEERS[1], status: "freelance", studioId: null });
+
+  // Engineer dashboard
+  const [engProfile, setEngProfile] = useState({
+    ...FREELANCE_ENGINEERS[1],
+    status: "freelance", studioId: null,
+  });
   const [engTab, setEngTab] = useState("profil");
   const [engSavedMsg, setEngSavedMsg] = useState(false);
   const [newDispo, setNewDispo] = useState({ date: DAYS[0], startH: "10", endH: "18" });
-  const [unlocked, setUnlocked] = useState(false);
-
-  // ─── MOT DE PASSE — doit être après tous les hooks ───────────────────────────
-  if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />;
-
+const [unlocked, setUnlocked] = useState(false);
+if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />;
   const unreadCount = notifs.filter(n => !n.read).length;
   const currentRate = getCommissionRate(dashStudio.hoursLastMonth);
   const nextPalier = dashStudio.hoursLastMonth >= 150 ? null : dashStudio.hoursLastMonth >= 50 ? 150 : 50;
 
+  // Filtrage studios
   const filtered = studios.filter(st => {
     const matchSearch = st.name.toLowerCase().includes(searchQuery.toLowerCase()) || st.location.toLowerCase().includes(searchQuery.toLowerCase());
     const matchMode = !filterMode || st.defaultEngineerMode === filterMode || st.slots.some(sl => (sl.engineerMode || st.defaultEngineerMode) === filterMode);
@@ -302,6 +329,7 @@ export default function App() {
     return byDay[0] || null;
   };
 
+  // Ingés disponibles pour un créneau autonome (même ville, rayon OK, notice OK)
   const getAvailableEngsForSlot = (studio, slot) => {
     return engineers.filter(eng => {
       const sameCity = eng.city.toLowerCase().includes(studio.city.toLowerCase()) || studio.city.toLowerCase().includes(eng.city.toLowerCase()) || eng.radiusKm >= 20;
@@ -311,32 +339,61 @@ export default function App() {
   };
 
   const openStudio = (st) => {
-    setSelectedStudio(st); setSelectedSlot(null); setSelectedFreelanceEng(null);
-    setBookingStep(1); setPaymentMethod(null); setRemainderMethod(null); setShowEngBasket(false); setView("studio");
+    setSelectedStudio(st);
+    setSelectedSlot(null);
+    setSelectedFreelanceEng(null);
+    setBookingStep(1);
+    setPaymentMethod(null);
+    setRemainderMethod(null);
+    setShowEngBasket(false);
+    setView("studio");
   };
 
-  const openEng = (eng) => { setSelectedEng(eng); setSelectedSlot(null); setBookingStep(1); setPaymentMethod(null); setView("engprofile"); };
+  const openEng = (eng) => {
+    setSelectedEng(eng);
+    setSelectedSlot(null);
+    setBookingStep(1);
+    setPaymentMethod(null);
+    setView("engprofile");
+  };
 
   const handleSlotClick = (slot) => {
     if (!slot.available) return;
-    setSelectedSlot(slot); setSelectedFreelanceEng(null);
+    setSelectedSlot(slot);
+    setSelectedFreelanceEng(null);
     const mode = slot.engineerMode || selectedStudio?.defaultEngineerMode || "included";
-    setShowEngBasket(mode === "autonomous");
+    // Sur créneau autonomie → ouvrir panier ingé automatiquement
+    if (mode === "autonomous") {
+      setShowEngBasket(true);
+    } else {
+      setShowEngBasket(false);
+    }
   };
 
   const confirmBooking = () => {
     if (!paymentMethod) return;
-    if (pricing && pricing.grandRemaining > 0 && !remainderMethod) return;
+    const p = pricing;
+    if (p && p.grandRemaining > 0 && !remainderMethod) return;
     setBookingStep(3);
-    setTimeout(() => setRatingSession({ studioName: selectedStudio?.name, hasFreelanceEng: !!selectedFreelanceEng, engName: selectedFreelanceEng?.name }), 3000);
+    setTimeout(() => {
+      setRatingSession({
+        studioName: selectedStudio?.name,
+        hasFreelanceEng: !!selectedFreelanceEng,
+        engName: selectedFreelanceEng?.name,
+      });
+    }, 3000);
   };
 
   const handleEngRequestAction = (reqId, action) => {
     setEngineers(engineers.map(eng => {
       if (eng.id !== engProfile.id) return eng;
-      return { ...eng, pendingRequests: eng.pendingRequests.map(r => r.id === reqId ? { ...r, status: action } : r) };
+      const updatedReqs = eng.pendingRequests.map(r => r.id === reqId ? { ...r, status: action } : r);
+      return { ...eng, pendingRequests: updatedReqs };
     }));
-    setEngProfile(prev => ({ ...prev, pendingRequests: prev.pendingRequests.map(r => r.id === reqId ? { ...r, status: action } : r) }));
+    setEngProfile(prev => ({
+      ...prev,
+      pendingRequests: prev.pendingRequests.map(r => r.id === reqId ? { ...r, status: action } : r),
+    }));
   };
 
   const pricing = selectedStudio && selectedSlot ? calcPricing(selectedStudio, selectedSlot, selectedFreelanceEng) : null;
@@ -346,8 +403,11 @@ export default function App() {
   return (
     <div style={s.root}>
       <div style={s.noise} />
+
+      {/* MODALE NOTATION */}
       {ratingSession && <RatingModal session={ratingSession} onClose={() => setRatingSession(null)} />}
 
+      {/* NAV */}
       <nav style={s.nav}>
         <span style={s.logo} onClick={() => setView("home")}><span style={s.logoDot}>●</span> STÜDIO</span>
         <div style={s.navLinks}>
@@ -356,19 +416,34 @@ export default function App() {
           {profileType === "studio" && view !== "home" && view !== "signup" && <button style={s.navBtn} onClick={() => setView("dashboard")}>Mon Studio</button>}
           {view !== "home" && view !== "signup" && (
             <div style={{ position: "relative" }}>
-              <button style={s.notifBtn} onClick={() => setShowNotifs(!showNotifs)}>🔔{unreadCount > 0 && <span style={s.notifBadge}>{unreadCount}</span>}</button>
+              <button style={s.notifBtn} onClick={() => setShowNotifs(!showNotifs)}>
+                🔔{unreadCount > 0 && <span style={s.notifBadge}>{unreadCount}</span>}
+              </button>
               {showNotifs && (
                 <div style={s.notifDropdown}>
-                  <div style={s.notifHeader}><span style={{ fontWeight: 700, color: "#fff", letterSpacing: 1, fontSize: 13 }}>Notifications</span><button style={{ background: "none", border: "none", color: "#555", fontSize: 11, cursor: "pointer" }} onClick={() => setNotifs(notifs.map(n => ({ ...n, read: true })))}>Tout lire</button></div>
-                  {notifs.map(n => (<div key={n.id} style={{ ...s.notifItem, ...(n.read ? {} : s.notifItemUnread) }}><div style={s.notifMsg}>{n.message}</div><div style={s.notifTime}>{n.time}</div></div>))}
+                  <div style={s.notifHeader}>
+                    <span style={{ fontWeight: 700, color: "#fff", letterSpacing: 1, fontSize: 13 }}>Notifications</span>
+                    <button style={{ background: "none", border: "none", color: "#555", fontSize: 11, cursor: "pointer" }} onClick={() => setNotifs(notifs.map(n => ({ ...n, read: true })))}>Tout lire</button>
+                  </div>
+                  {notifs.map(n => (
+                    <div key={n.id} style={{ ...s.notifItem, ...(n.read ? {} : s.notifItemUnread) }}>
+                      <div style={s.notifMsg}>{n.message}</div>
+                      <div style={s.notifTime}>{n.time}</div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
           )}
-          {(view === "home" || view === "signup") ? <button style={s.navCta} onClick={() => setView("signup")}>Rejoindre</button> : <div style={s.avatarIcon}>{profileType === "artist" ? "🎤" : profileType === "engineer" ? "🎛️" : "🏢"}</div>}
+          {(view === "home" || view === "signup") ? (
+            <button style={s.navCta} onClick={() => setView("signup")}>Rejoindre</button>
+          ) : (
+            <div style={s.avatarIcon}>{profileType === "artist" ? "🎤" : profileType === "engineer" ? "🎛️" : "🏢"}</div>
+          )}
         </div>
       </nav>
 
+      {/* HOME */}
       {view === "home" && (
         <div style={s.page}>
           <div style={s.hero}>
@@ -425,6 +500,7 @@ export default function App() {
         </div>
       )}
 
+      {/* SIGNUP */}
       {view === "signup" && (
         <div style={s.page}>
           <div style={s.centerBlock}>
@@ -463,27 +539,56 @@ export default function App() {
                         ))}
                       </div>
                     </div>
-                    {engStatus === "freelance" && (<>
-                      <div style={s.formGroup}><label style={s.formLabel}>Rayon de déplacement</label><select style={s.input}>{RADIUS_OPTIONS.map(r => <option key={r} value={r}>{r} km autour de ma ville</option>)}</select></div>
-                      <div style={s.formGroup}><label style={s.formLabel}>Délai minimum avant une session</label><select style={s.input}>{MIN_NOTICE_OPTIONS.map(o => <option key={o.h} value={o.h}>{o.label}</option>)}</select></div>
-                      <input style={s.input} placeholder="Ton tarif horaire net (€/h)" type="number" />
-                    </>)}
+                    {engStatus === "freelance" && (
+                      <>
+                        <div style={s.formGroup}>
+                          <label style={s.formLabel}>Rayon de déplacement</label>
+                          <select style={s.input}>
+                            {RADIUS_OPTIONS.map(r => <option key={r} value={r}>{r} km autour de ma ville</option>)}
+                          </select>
+                        </div>
+                        <div style={s.formGroup}>
+                          <label style={s.formLabel}>Délai minimum avant une session</label>
+                          <select style={s.input}>
+                            {MIN_NOTICE_OPTIONS.map(o => <option key={o.h} value={o.h}>{o.label}</option>)}
+                          </select>
+                        </div>
+                        <input style={s.input} placeholder="Ton tarif horaire net (€/h)" type="number" />
+                      </>
+                    )}
                     {engStatus === "studio" && <select style={s.input}><option value="">Sélectionne ton studio...</option>{INITIAL_STUDIOS.map(st => <option key={st.id} value={st.id}>{st.name}</option>)}</select>}
                   </>
                 )}
-                <button style={s.ctaPrimary} onClick={() => setView(profileType === "studio" ? "dashboard" : profileType === "engineer" ? "engdashboard" : "explore")}>Créer mon compte →</button>
+                <button style={s.ctaPrimary} onClick={() => setView(profileType === "studio" ? "dashboard" : profileType === "engineer" ? "engdashboard" : "explore")}>
+                  Créer mon compte →
+                </button>
               </div>
             )}
           </div>
         </div>
       )}
 
+      {/* EXPLORE */}
       {view === "explore" && (
         <div style={s.page}>
           <h2 style={s.exploreTitle}>Studios disponibles</h2>
           <input style={s.searchInput} placeholder="🔍  Ville, nom du studio..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
-          <div style={s.filterSection}><div style={s.filterLabel}>📅 Quand ?</div><div style={s.filterRow}>{["Auj.", "Dem.", "Mer 8", "Jeu 9", "Ven 10", "Sam 11", "Dim 12"].map(day => (<button key={day} style={{ ...s.filterChip, ...(filterDay === day ? s.filterChipActive : {}) }} onClick={() => setFilterDay(filterDay === day ? null : day)}>{day}</button>))}</div></div>
-          <div style={s.filterSection}><div style={s.filterLabel}>🎛️ Type de session</div><div style={s.filterRow}>{[{ id: "included", label: "👤 Avec ingé" }, { id: "autonomous", label: "🔧 Autonomie" }, { id: "freelance", label: "🎒 Ingé freelance" }].map(m => (<button key={m.id} style={{ ...s.filterChip, ...(filterMode === m.id ? s.filterChipActive : {}) }} onClick={() => setFilterMode(filterMode === m.id ? null : m.id)}>{m.label}</button>))}</div></div>
+          <div style={s.filterSection}>
+            <div style={s.filterLabel}>📅 Quand ?</div>
+            <div style={s.filterRow}>
+              {["Auj.", "Dem.", "Mer 8", "Jeu 9", "Ven 10", "Sam 11", "Dim 12"].map(day => (
+                <button key={day} style={{ ...s.filterChip, ...(filterDay === day ? s.filterChipActive : {}) }} onClick={() => setFilterDay(filterDay === day ? null : day)}>{day}</button>
+              ))}
+            </div>
+          </div>
+          <div style={s.filterSection}>
+            <div style={s.filterLabel}>🎛️ Type de session</div>
+            <div style={s.filterRow}>
+              {[{ id: "included", label: "👤 Avec ingé" }, { id: "autonomous", label: "🔧 Autonomie" }, { id: "freelance", label: "🎒 Ingé freelance" }].map(m => (
+                <button key={m.id} style={{ ...s.filterChip, ...(filterMode === m.id ? s.filterChipActive : {}) }} onClick={() => setFilterMode(filterMode === m.id ? null : m.id)}>{m.label}</button>
+              ))}
+            </div>
+          </div>
           {filtered.length === 0 && <div style={{ color: "#555", fontFamily: "DM Sans, sans-serif", padding: "32px 0", textAlign: "center" }}>Aucun studio disponible pour ces critères.</div>}
           <div style={s.studioGrid}>
             {filtered.map(studio => {
@@ -505,7 +610,10 @@ export default function App() {
                   <div style={s.studioCardBody}>
                     <div style={s.studioCardName}>{studio.name}</div>
                     <div style={s.studioCardLocation}>📍 {studio.location}</div>
-                    <div style={s.studioCardEngineer}><span style={s.engineerBadge}>{studio.engineerType}</span><span style={s.engineerName}>{studio.engineer}</span></div>
+                    <div style={s.studioCardEngineer}>
+                      <span style={s.engineerBadge}>{studio.engineerType}</span>
+                      <span style={s.engineerName}>{studio.engineer}</span>
+                    </div>
                     <div style={s.studioCardFooter}>
                       <div>
                         {hasIncluded && <div style={s.studioPrice}><span style={s.priceNum}>{displayed}€</span>/h <span style={{ fontSize: 10, color: "#555" }}>avec ingé</span></div>}
@@ -524,6 +632,8 @@ export default function App() {
               );
             })}
           </div>
+
+          {/* INGÉS FREELANCE */}
           <div style={{ marginTop: 56 }}>
             <div style={s.sectionTag}>INGÉS SON FREELANCE</div>
             <h2 style={{ ...s.sectionTitle, fontSize: 28 }}>Ils viennent à toi.</h2>
@@ -548,6 +658,7 @@ export default function App() {
         </div>
       )}
 
+      {/* PAGE PUBLIQUE INGÉ */}
       {view === "engprofile" && selectedEng && (
         <div style={s.page}>
           <button style={s.backBtn} onClick={() => setView("explore")}>← Retour</button>
@@ -557,7 +668,10 @@ export default function App() {
               <div style={s.detailInfo}>
                 <h1 style={s.detailName}>{selectedEng.name}</h1>
                 <div style={{ fontSize: 12, color: "#666", fontFamily: "DM Sans, sans-serif", marginBottom: 6 }}>🎒 Freelance · 📍 {selectedEng.city} · rayon {selectedEng.radiusKm}km</div>
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>{selectedEng.specialty.map(sp => <span key={sp} style={s.cardTag}>{sp}</span>)}{selectedEng.genres.map(g => <span key={g} style={s.cardTag}>{g}</span>)}</div>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                  {selectedEng.specialty.map(sp => <span key={sp} style={s.cardTag}>{sp}</span>)}
+                  {selectedEng.genres.map(g => <span key={g} style={s.cardTag}>{g}</span>)}
+                </div>
               </div>
               <div style={{ textAlign: "right", flexShrink: 0 }}>
                 <div style={s.detailPrice}>{getPriceDisplayed(selectedEng.rate, 0.06)}€<span style={{ fontSize: 14, color: "#888" }}>/h</span></div>
@@ -567,7 +681,9 @@ export default function App() {
               </div>
             </div>
             <div style={s.detailBody}>
-              <div style={{ background: "#111", padding: 18, marginBottom: 28, fontSize: 13, color: "#888", fontFamily: "DM Sans, sans-serif", lineHeight: 1.8 }}>{selectedEng.bio}</div>
+              <div style={{ background: "#111", padding: 18, marginBottom: 28, fontSize: 13, color: "#888", fontFamily: "DM Sans, sans-serif", lineHeight: 1.8 }}>
+                {selectedEng.bio}
+              </div>
               <div style={s.slotSection}>
                 <div style={s.slotTitle}>Disponibilités</div>
                 {selectedEng.availabilities.map(dispo => {
@@ -578,7 +694,13 @@ export default function App() {
                         <div style={{ color: "#fff", fontWeight: 700 }}>{dispo.date} · {dispo.time}</div>
                         <div style={{ fontSize: 11, color: "#555", fontFamily: "DM Sans, sans-serif", marginTop: 2 }}>⏱ {delay.label} · 100% en ligne</div>
                       </div>
-                      <button style={s.ctaPrimary} onClick={() => { setSelectedSlot({ id: dispo.id, date: dispo.date, time: dispo.time, hours: 2, available: true, hoursUntil: dispo.hoursUntil }); setSelectedFreelanceEng(selectedEng); setSelectedStudio(null); setBookingStep(2); setView("engbooking"); }}>Réserver</button>
+                      <button style={s.ctaPrimary} onClick={() => {
+                        setSelectedSlot({ id: dispo.id, date: dispo.date, time: dispo.time, hours: 2, available: true, hoursUntil: dispo.hoursUntil });
+                        setSelectedFreelanceEng(selectedEng);
+                        setSelectedStudio(null);
+                        setBookingStep(2);
+                        setView("engbooking");
+                      }}>Réserver</button>
                     </div>
                   );
                 })}
@@ -586,7 +708,16 @@ export default function App() {
               {selectedEng.reviewsData.length > 0 && (
                 <div style={s.slotSection}>
                   <div style={s.slotTitle}>Avis artistes</div>
-                  {selectedEng.reviewsData.map(r => (<div key={r.id} style={s.reviewCard}><div style={s.reviewHeader}><span style={s.reviewArtist}>{r.artist}</span><StarRating value={r.rating} size={13} /><span style={s.reviewDate}>{r.date}</span></div>{r.comment && <div style={s.reviewComment}>{r.comment}</div>}</div>))}
+                  {selectedEng.reviewsData.map(r => (
+                    <div key={r.id} style={s.reviewCard}>
+                      <div style={s.reviewHeader}>
+                        <span style={s.reviewArtist}>{r.artist}</span>
+                        <StarRating value={r.rating} size={13} />
+                        <span style={s.reviewDate}>{r.date}</span>
+                      </div>
+                      {r.comment && <div style={s.reviewComment}>{r.comment}</div>}
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -594,28 +725,52 @@ export default function App() {
         </div>
       )}
 
+      {/* BOOKING INGÉ SEUL */}
       {view === "engbooking" && selectedFreelanceEng && selectedSlot && (
         <div style={s.page}>
           <button style={s.backBtn} onClick={() => setView("engprofile")}>← Retour</button>
           <div style={s.studioDetail}>
             <div style={{ padding: 32 }}>
               <div style={s.pricingTitle}>Réservation — {selectedFreelanceEng.name}</div>
-              <div style={{ fontFamily: "DM Sans, sans-serif", color: "#555", marginBottom: 8, fontSize: 13 }}>{selectedSlot.date} · {selectedSlot.time}</div>
-              <div style={{ ...s.cashWarning, background: "#00e5ff11", border: "1px solid #00e5ff33", color: "#00e5ff", marginBottom: 20 }}>⏱ {getEngResponseDelay(selectedSlot.hoursUntil).label} — tu seras notifié de son acceptation.</div>
+              <div style={{ fontFamily: "DM Sans, sans-serif", color: "#555", marginBottom: 8, fontSize: 13 }}>
+                {selectedSlot.date} · {selectedSlot.time}
+              </div>
+              <div style={{ ...s.cashWarning, background: "#00e5ff11", border: "1px solid #00e5ff33", color: "#00e5ff", marginBottom: 20 }}>
+                ⏱ {getEngResponseDelay(selectedSlot.hoursUntil).label} — tu seras notifié de son acceptation.
+              </div>
               <input style={{ ...s.input, marginBottom: 16 }} placeholder="Lieu de la session (studio, adresse, home studio...)" />
               <div style={s.pricingPreview}>
-                <div style={s.pricingRow}><span style={s.pricingLabel}>Ingé freelance ({selectedSlot.hours}h)</span><span style={s.pricingValue}>{getPriceDisplayed(selectedFreelanceEng.rate, 0.06) * selectedSlot.hours}€</span></div>
+                <div style={s.pricingRow}>
+                  <span style={s.pricingLabel}>Ingé freelance ({selectedSlot.hours}h)</span>
+                  <span style={s.pricingValue}>{getPriceDisplayed(selectedFreelanceEng.rate, 0.06) * selectedSlot.hours}€</span>
+                </div>
                 <div style={{ fontSize: 11, color: "#00e5ff", marginTop: 8, fontFamily: "DM Sans, sans-serif" }}>✓ 100% en ligne · Remboursement intégral si l'ingé refuse</div>
               </div>
               <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 10 }}>
-                {PAYMENT_METHODS.map(m => (<div key={m.id}><div style={{ ...s.payMethod, ...(paymentMethod === m.id ? s.payMethodSelected : {}) }} onClick={() => setPaymentMethod(m.id)}><span style={{ fontSize: 20 }}>{m.icon}</span><span style={s.payMethodLabel}>{m.label}</span>{paymentMethod === m.id && <span style={{ color: "#ff3b3b", fontWeight: 700 }}>✓</span>}</div>{m.info && <div style={s.paysafeInfo}>ℹ️ {m.info}</div>}</div>))}
+                {PAYMENT_METHODS.map(m => (
+                  <div key={m.id}>
+                    <div style={{ ...s.payMethod, ...(paymentMethod === m.id ? s.payMethodSelected : {}) }} onClick={() => setPaymentMethod(m.id)}>
+                      <span style={{ fontSize: 20 }}>{m.icon}</span>
+                      <span style={s.payMethodLabel}>{m.label}</span>
+                      {paymentMethod === m.id && <span style={{ color: "#ff3b3b", fontWeight: 700 }}>✓</span>}
+                    </div>
+                    {m.info && <div style={s.paysafeInfo}>ℹ️ {m.info}</div>}
+                  </div>
+                ))}
               </div>
-              {bookingStep !== 3 && <button style={{ ...s.ctaPrimary, width: "100%", marginTop: 20, opacity: paymentMethod ? 1 : 0.4 }} onClick={() => { if (paymentMethod) setBookingStep(3); }}>Payer {getPriceDisplayed(selectedFreelanceEng.rate, 0.06) * selectedSlot.hours}€ — en attente d'acceptation →</button>}
+              {bookingStep !== 3 && (
+                <button style={{ ...s.ctaPrimary, width: "100%", marginTop: 20, opacity: paymentMethod ? 1 : 0.4 }} onClick={() => { if (paymentMethod) setBookingStep(3); }}>
+                  Payer {getPriceDisplayed(selectedFreelanceEng.rate, 0.06) * selectedSlot.hours}€ — en attente d'acceptation →
+                </button>
+              )}
               {bookingStep === 3 && (
                 <div style={{ textAlign: "center", marginTop: 32, padding: 24, background: "#111", border: "1px solid #1a1a1a" }}>
                   <div style={{ fontSize: 40, marginBottom: 12 }}>⏳</div>
                   <div style={{ fontSize: 20, fontWeight: 900, color: "#fff", letterSpacing: 2, marginBottom: 8 }}>EN ATTENTE</div>
-                  <div style={{ color: "#666", fontFamily: "DM Sans, sans-serif", fontSize: 13 }}>{selectedFreelanceEng.name} a {getEngResponseDelay(selectedSlot.hoursUntil).hours}h pour accepter ou refuser.<br />Remboursement intégral si refus.</div>
+                  <div style={{ color: "#666", fontFamily: "DM Sans, sans-serif", fontSize: 13 }}>
+                    {selectedFreelanceEng.name} a {getEngResponseDelay(selectedSlot.hoursUntil).hours}h pour accepter ou refuser.<br />
+                    Tu seras notifié dès sa réponse. Remboursement intégral si refus.
+                  </div>
                 </div>
               )}
             </div>
@@ -623,6 +778,7 @@ export default function App() {
         </div>
       )}
 
+      {/* STUDIO DETAIL */}
       {view === "studio" && selectedStudio && (
         <div style={s.page}>
           <button style={s.backBtn} onClick={() => setView("explore")}>← Retour aux studios</button>
@@ -637,6 +793,7 @@ export default function App() {
               </div>
             ))}
           </div>
+
           <div style={s.studioDetail}>
             {(() => {
               const rate = getCommissionRate(selectedStudio.hoursLastMonth);
@@ -662,10 +819,14 @@ export default function App() {
                 </div>
               );
             })()}
+
             <div style={s.detailBody}>
               <div style={s.engineerBlock}>
                 <div style={{ fontSize: 28 }}>🎛️</div>
-                <div><div style={s.engineerBlockName}>{selectedStudio.engineer}</div><div style={s.engineerBlockType}>{selectedStudio.engineerType}</div></div>
+                <div>
+                  <div style={s.engineerBlockName}>{selectedStudio.engineer}</div>
+                  <div style={s.engineerBlockType}>{selectedStudio.engineerType}</div>
+                </div>
                 <div style={s.ratingBlock}>⭐ {selectedStudio.rating} · {selectedStudio.reviewCount} avis</div>
               </div>
 
@@ -678,7 +839,10 @@ export default function App() {
                         const mode = slot.engineerMode || selectedStudio.defaultEngineerMode || "included";
                         const slotPrice = getSlotPrice(selectedStudio, slot);
                         return (
-                          <div key={slot.id} style={{ ...s.slotCard, ...(slot.available ? {} : s.slotUnavailable), ...(selectedSlot?.id === slot.id ? s.slotSelected : {}) }} onClick={() => handleSlotClick(slot)}>
+                          <div key={slot.id}
+                            style={{ ...s.slotCard, ...(slot.available ? {} : s.slotUnavailable), ...(selectedSlot?.id === slot.id ? s.slotSelected : {}) }}
+                            onClick={() => handleSlotClick(slot)}
+                          >
                             <div style={s.slotDate}>{slot.date}</div>
                             <div style={s.slotTime}>{slot.time}</div>
                             <div style={s.slotHours}>{slot.hours}h · {slot.hours * slotPrice}€</div>
@@ -691,20 +855,29 @@ export default function App() {
                     </div>
                   </div>
 
+                  {/* PANIER INGÉ — s'ouvre automatiquement sur créneau autonomie */}
                   {selectedSlot && showEngBasket && (
                     <div style={s.engBasket}>
                       <div style={s.engBasketHeader}>
-                        <div><div style={s.engBasketTitle}>🎒 Ajouter un ingé son à ta session ?</div><div style={s.engBasketSub}>Ce créneau est en autonomie. Tu peux venir seul ou choisir un ingé freelance disponible.</div></div>
+                        <div>
+                          <div style={s.engBasketTitle}>🎒 Ajouter un ingé son à ta session ?</div>
+                          <div style={s.engBasketSub}>Ce créneau est en autonomie. Tu peux venir seul ou choisir un ingé freelance disponible.</div>
+                        </div>
                         <button style={{ background: "none", border: "none", color: "#555", cursor: "pointer", fontSize: 18 }} onClick={() => setShowEngBasket(false)}>✕</button>
                       </div>
                       {availableEngs.length === 0 ? (
-                        <div style={{ color: "#555", fontFamily: "DM Sans, sans-serif", fontSize: 13, padding: "12px 0" }}>Aucun ingé freelance disponible pour ce créneau dans ce secteur.</div>
+                        <div style={{ color: "#555", fontFamily: "DM Sans, sans-serif", fontSize: 13, padding: "12px 0" }}>
+                          Aucun ingé freelance disponible pour ce créneau dans ce secteur.
+                        </div>
                       ) : (
                         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 12 }}>
                           {availableEngs.map(eng => {
                             const delay = getEngResponseDelay(selectedSlot.hoursUntil);
                             return (
-                              <div key={eng.id} style={{ ...s.engCard, ...(selectedFreelanceEng?.id === eng.id ? s.engCardSelected : {}) }} onClick={() => setSelectedFreelanceEng(selectedFreelanceEng?.id === eng.id ? null : eng)}>
+                              <div key={eng.id}
+                                style={{ ...s.engCard, ...(selectedFreelanceEng?.id === eng.id ? s.engCardSelected : {}) }}
+                                onClick={() => setSelectedFreelanceEng(selectedFreelanceEng?.id === eng.id ? null : eng)}
+                              >
                                 <div style={{ ...s.engAvatarSm, borderColor: eng.color, color: eng.color, width: 36, height: 36, fontSize: 14 }}>{eng.avatar}</div>
                                 <div style={{ flex: 1 }}>
                                   <div style={{ fontWeight: 700, color: "#fff", fontSize: 14 }}>{eng.name}</div>
@@ -721,17 +894,29 @@ export default function App() {
                           })}
                         </div>
                       )}
-                      {selectedFreelanceEng && <div style={{ ...s.cashWarning, background: "#00e5ff11", border: "1px solid #00e5ff33", color: "#00e5ff", marginTop: 12 }}>⏱ {selectedFreelanceEng.name} a {getEngResponseDelay(selectedSlot.hoursUntil).hours}h pour accepter. Remboursement intégral si refus.</div>}
+                      {selectedFreelanceEng && (
+                        <div style={{ ...s.cashWarning, background: "#00e5ff11", border: "1px solid #00e5ff33", color: "#00e5ff", marginTop: 12 }}>
+                          ⏱ {selectedFreelanceEng.name} a {getEngResponseDelay(selectedSlot.hoursUntil).hours}h pour accepter. Remboursement intégral si refus.
+                        </div>
+                      )}
                     </div>
                   )}
 
+                  {/* PANIER INGÉ — créneau freelance */}
                   {selectedSlot && slotMode === "freelance" && !showEngBasket && (
                     <div style={{ marginBottom: 24 }}>
                       <div style={s.slotTitle}>Choisir un ingé son <span style={{ fontSize: 11, color: "#555", fontWeight: 400 }}>(optionnel)</span></div>
                       {FREELANCE_ENGINEERS.map(eng => (
-                        <div key={eng.id} style={{ ...s.engCard, ...(selectedFreelanceEng?.id === eng.id ? s.engCardSelected : {}), marginBottom: 10 }} onClick={() => setSelectedFreelanceEng(selectedFreelanceEng?.id === eng.id ? null : eng)}>
-                          <div><div style={{ fontWeight: 700, color: "#fff", fontSize: 14 }}>{eng.name}</div><div style={{ color: "#666", fontSize: 11, fontFamily: "DM Sans, sans-serif" }}>{eng.specialty.join(", ")}</div></div>
-                          <div style={{ textAlign: "right" }}><div style={{ fontSize: 15, fontWeight: 900, color: "#fff" }}>+{getPriceDisplayed(eng.rate, 0.06)}€/h</div><div style={{ fontSize: 10, color: "#555" }}>⭐ {eng.rating} · {eng.acceptanceRate}% acc.</div></div>
+                        <div key={eng.id} style={{ ...s.engCard, ...(selectedFreelanceEng?.id === eng.id ? s.engCardSelected : {}), marginBottom: 10 }}
+                          onClick={() => setSelectedFreelanceEng(selectedFreelanceEng?.id === eng.id ? null : eng)}>
+                          <div>
+                            <div style={{ fontWeight: 700, color: "#fff", fontSize: 14 }}>{eng.name}</div>
+                            <div style={{ color: "#666", fontSize: 11, fontFamily: "DM Sans, sans-serif" }}>{eng.specialty.join(", ")}</div>
+                          </div>
+                          <div style={{ textAlign: "right" }}>
+                            <div style={{ fontSize: 15, fontWeight: 900, color: "#fff" }}>+{getPriceDisplayed(eng.rate, 0.06)}€/h</div>
+                            <div style={{ fontSize: 10, color: "#555" }}>⭐ {eng.rating} · {eng.acceptanceRate}% acc.</div>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -740,10 +925,24 @@ export default function App() {
                   {selectedSlot && pricing && (
                     <div style={s.pricingPreview}>
                       <div style={s.pricingTitle}>Récap tarifaire</div>
-                      <div style={s.pricingRow}><span style={s.pricingLabel}>Studio · {slotMode === "autonomous" ? "🔧 Autonomie" : "👤 Ingé inclus"} ({selectedSlot.hours}h)</span><span style={s.pricingValue}>{pricing.studioTotal}€</span></div>
-                      {pricing.engTotal > 0 && <div style={s.pricingRow}><span style={s.pricingLabel}>+ {selectedFreelanceEng?.name} ({selectedSlot.hours}h)</span><span style={s.pricingValue}>{pricing.engTotal}€</span></div>}
-                      <div style={{ ...s.pricingRow, borderTop: "1px solid #1e1e1e", paddingTop: 10, marginTop: 6 }}><span style={s.pricingLabel}>Total</span><span style={{ ...s.pricingValue, fontSize: 20 }}>{pricing.grandTotal}€</span></div>
-                      <div style={s.pricingRow}><span style={s.pricingLabel}>À payer maintenant <span style={s.pricingNote}>obligatoire</span></span><span style={{ ...s.pricingValue, color: "#ff3b3b" }}>{pricing.grandDeposit}€</span></div>
+                      <div style={s.pricingRow}>
+                        <span style={s.pricingLabel}>Studio · {slotMode === "autonomous" ? "🔧 Autonomie" : "👤 Ingé inclus"} ({selectedSlot.hours}h)</span>
+                        <span style={s.pricingValue}>{pricing.studioTotal}€</span>
+                      </div>
+                      {pricing.engTotal > 0 && (
+                        <div style={s.pricingRow}>
+                          <span style={s.pricingLabel}>+ {selectedFreelanceEng?.name} ({selectedSlot.hours}h)</span>
+                          <span style={s.pricingValue}>{pricing.engTotal}€</span>
+                        </div>
+                      )}
+                      <div style={{ ...s.pricingRow, borderTop: "1px solid #1e1e1e", paddingTop: 10, marginTop: 6 }}>
+                        <span style={s.pricingLabel}>Total</span>
+                        <span style={{ ...s.pricingValue, fontSize: 20 }}>{pricing.grandTotal}€</span>
+                      </div>
+                      <div style={s.pricingRow}>
+                        <span style={s.pricingLabel}>À payer maintenant <span style={s.pricingNote}>obligatoire</span></span>
+                        <span style={{ ...s.pricingValue, color: "#ff3b3b" }}>{pricing.grandDeposit}€</span>
+                      </div>
                       {pricing.grandRemaining > 0 && <div style={s.pricingRow}><span style={s.pricingLabel}>Solde sur place</span><span style={s.pricingValue}>{pricing.grandRemaining}€</span></div>}
                       {pricing.grandRemaining === 0 && <div style={{ fontSize: 11, color: "#00e5ff", marginTop: 6, fontFamily: "DM Sans, sans-serif" }}>✓ 100% réglé en ligne</div>}
                       <div style={s.cancelPolicy}>
@@ -759,7 +958,16 @@ export default function App() {
                   {selectedStudio.reviewsData?.length > 0 && !selectedSlot && (
                     <div style={{ marginTop: 32 }}>
                       <div style={s.slotTitle}>Avis artistes</div>
-                      {selectedStudio.reviewsData.map(r => (<div key={r.id} style={s.reviewCard}><div style={s.reviewHeader}><span style={s.reviewArtist}>{r.artist}</span><StarRating value={r.rating} size={13} /><span style={s.reviewDate}>{r.date}</span></div>{r.comment && <div style={s.reviewComment}>{r.comment}</div>}</div>))}
+                      {selectedStudio.reviewsData.map(r => (
+                        <div key={r.id} style={s.reviewCard}>
+                          <div style={s.reviewHeader}>
+                            <span style={s.reviewArtist}>{r.artist}</span>
+                            <StarRating value={r.rating} size={13} />
+                            <span style={s.reviewDate}>{r.date}</span>
+                          </div>
+                          {r.comment && <div style={s.reviewComment}>{r.comment}</div>}
+                        </div>
+                      ))}
                     </div>
                   )}
                 </>
@@ -769,9 +977,20 @@ export default function App() {
                 <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
                   <div style={s.payBlock}>
                     <div style={s.payBlockHeader}><span>💳 À payer maintenant</span><span style={s.payBlockAmount}>{pricing.grandDeposit}€</span></div>
-                    <div style={s.payBlockSub}>{selectedFreelanceEng ? `Inclut l'acompte studio + ${selectedFreelanceEng.name} (100% en ligne). Remboursement si l'ingé refuse.` : "Sécurise ton créneau."}</div>
+                    <div style={s.payBlockSub}>
+                      {selectedFreelanceEng ? `Inclut l'acompte studio + ${selectedFreelanceEng.name} (100% en ligne). Remboursement si l'ingé refuse.` : "Sécurise ton créneau."}
+                    </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                      {PAYMENT_METHODS.map(m => (<div key={m.id}><div style={{ ...s.payMethod, ...(paymentMethod === m.id ? s.payMethodSelected : {}) }} onClick={() => setPaymentMethod(m.id)}><span style={{ fontSize: 20 }}>{m.icon}</span><span style={s.payMethodLabel}>{m.label}</span>{paymentMethod === m.id && <span style={{ color: "#ff3b3b", fontWeight: 700 }}>✓</span>}</div>{m.info && <div style={s.paysafeInfo}>ℹ️ {m.info}</div>}</div>))}
+                      {PAYMENT_METHODS.map(m => (
+                        <div key={m.id}>
+                          <div style={{ ...s.payMethod, ...(paymentMethod === m.id ? s.payMethodSelected : {}) }} onClick={() => setPaymentMethod(m.id)}>
+                            <span style={{ fontSize: 20 }}>{m.icon}</span>
+                            <span style={s.payMethodLabel}>{m.label}</span>
+                            {paymentMethod === m.id && <span style={{ color: "#ff3b3b", fontWeight: 700 }}>✓</span>}
+                          </div>
+                          {m.info && <div style={s.paysafeInfo}>ℹ️ {m.info}</div>}
+                        </div>
+                      ))}
                     </div>
                   </div>
                   {pricing.grandRemaining > 0 && (
@@ -779,20 +998,39 @@ export default function App() {
                       <div style={s.payBlockHeader}><span>🏠 Solde sur place</span><span style={s.payBlockAmount}>{pricing.grandRemaining}€</span></div>
                       <div style={s.payBlockSub}>Comment tu règles le reste ?</div>
                       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                        <div style={{ ...s.payMethod, ...(remainderMethod === "card" ? s.payMethodSelected : {}) }} onClick={() => setRemainderMethod("card")}><span style={{ fontSize: 20 }}>💳</span><span style={s.payMethodLabel}>Carte bancaire</span>{remainderMethod === "card" && <span style={{ color: "#ff3b3b", fontWeight: 700 }}>✓</span>}</div>
+                        <div style={{ ...s.payMethod, ...(remainderMethod === "card" ? s.payMethodSelected : {}) }} onClick={() => setRemainderMethod("card")}>
+                          <span style={{ fontSize: 20 }}>💳</span><span style={s.payMethodLabel}>Carte bancaire</span>
+                          {remainderMethod === "card" && <span style={{ color: "#ff3b3b", fontWeight: 700 }}>✓</span>}
+                        </div>
                         {selectedStudio.acceptsCash ? (
-                          <div style={{ ...s.payMethod, ...(remainderMethod === "cash" ? s.payMethodSelected : {}) }} onClick={() => setRemainderMethod("cash")}><span style={{ fontSize: 20 }}>💵</span><span style={s.payMethodLabel}>Espèces (cash)</span>{remainderMethod === "cash" && <span style={{ color: "#ff3b3b", fontWeight: 700 }}>✓</span>}</div>
+                          <div style={{ ...s.payMethod, ...(remainderMethod === "cash" ? s.payMethodSelected : {}) }} onClick={() => setRemainderMethod("cash")}>
+                            <span style={{ fontSize: 20 }}>💵</span><span style={s.payMethodLabel}>Espèces (cash)</span>
+                            {remainderMethod === "cash" && <span style={{ color: "#ff3b3b", fontWeight: 700 }}>✓</span>}
+                          </div>
                         ) : (
-                          <div style={{ ...s.payMethod, opacity: 0.35, cursor: "not-allowed" }}><span style={{ fontSize: 20 }}>💵</span><span style={s.payMethodLabel}>Espèces — non accepté</span></div>
+                          <div style={{ ...s.payMethod, opacity: 0.35, cursor: "not-allowed" }}>
+                            <span style={{ fontSize: 20 }}>💵</span><span style={s.payMethodLabel}>Espèces — non accepté</span>
+                          </div>
                         )}
                       </div>
                       {remainderMethod === "cash" && <div style={s.cashWarning}>⚠️ Prévois {pricing.grandRemaining}€ en espèces. Le studio sera notifié.</div>}
                     </div>
                   )}
                   <div style={s.payBlock}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: pricing.grandRemaining > 0 ? 6 : 16 }}><span style={{ fontFamily: "DM Sans, sans-serif", color: "#aaa" }}>À payer maintenant</span><span style={{ color: "#ff3b3b", fontWeight: 900, fontSize: 22 }}>{pricing.grandDeposit}€</span></div>
-                    {pricing.grandRemaining > 0 && <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}><span style={{ fontFamily: "DM Sans, sans-serif", color: "#555", fontSize: 13 }}>Solde sur place</span><span style={{ color: "#666", fontSize: 13 }}>{pricing.grandRemaining}€ {remainderMethod === "cash" ? "en cash" : remainderMethod === "card" ? "en carte" : ""}</span></div>}
-                    <button style={{ ...s.ctaPrimary, width: "100%", opacity: (paymentMethod && (pricing.grandRemaining === 0 || remainderMethod)) ? 1 : 0.4 }} onClick={confirmBooking}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: pricing.grandRemaining > 0 ? 6 : 16 }}>
+                      <span style={{ fontFamily: "DM Sans, sans-serif", color: "#aaa" }}>À payer maintenant</span>
+                      <span style={{ color: "#ff3b3b", fontWeight: 900, fontSize: 22 }}>{pricing.grandDeposit}€</span>
+                    </div>
+                    {pricing.grandRemaining > 0 && (
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+                        <span style={{ fontFamily: "DM Sans, sans-serif", color: "#555", fontSize: 13 }}>Solde sur place</span>
+                        <span style={{ color: "#666", fontSize: 13 }}>{pricing.grandRemaining}€ {remainderMethod === "cash" ? "en cash" : remainderMethod === "card" ? "en carte" : ""}</span>
+                      </div>
+                    )}
+                    <button
+                      style={{ ...s.ctaPrimary, width: "100%", opacity: (paymentMethod && (pricing.grandRemaining === 0 || remainderMethod)) ? 1 : 0.4 }}
+                      onClick={confirmBooking}
+                    >
                       {selectedFreelanceEng ? `Payer ${pricing.grandDeposit}€ — en attente d'acceptation →` : `Payer ${pricing.grandDeposit}€ et confirmer →`}
                     </button>
                     <div style={{ textAlign: "center", fontSize: 11, color: "#444", marginTop: 10, fontFamily: "DM Sans, sans-serif" }}>🔒 Paiement sécurisé</div>
@@ -803,18 +1041,31 @@ export default function App() {
               {bookingStep === 3 && pricing && (
                 <div style={{ textAlign: "center", paddingTop: 10 }}>
                   <div style={{ fontSize: 56, marginBottom: 16 }}>{selectedFreelanceEng ? "⏳" : "✅"}</div>
-                  <h2 style={{ fontSize: 32, fontWeight: 900, letterSpacing: 3, textTransform: "uppercase", color: "#fff", margin: "0 0 12px" }}>{selectedFreelanceEng ? "En attente" : "Confirmé !"}</h2>
+                  <h2 style={{ fontSize: 32, fontWeight: 900, letterSpacing: 3, textTransform: "uppercase", color: "#fff", margin: "0 0 12px" }}>
+                    {selectedFreelanceEng ? "En attente" : "Confirmé !"}
+                  </h2>
                   <p style={{ color: "#666", lineHeight: 1.7, marginBottom: 24, fontFamily: "DM Sans, sans-serif", fontSize: 13 }}>
-                    {selectedFreelanceEng ? `${pricing.grandDeposit}€ encaissés. ${selectedFreelanceEng.name} a ${getEngResponseDelay(selectedSlot.hoursUntil).hours}h pour accepter. Remboursement intégral si refus.` : `${pricing.grandDeposit}€ encaissés. ${pricing.grandRemaining > 0 ? `Règle les ${pricing.grandRemaining}€ ${remainderMethod === "cash" ? "en espèces" : "par carte"} sur place.` : "Tout est réglé."}`}
+                    {selectedFreelanceEng
+                      ? `${pricing.grandDeposit}€ encaissés. ${selectedFreelanceEng.name} a ${getEngResponseDelay(selectedSlot.hoursUntil).hours}h pour accepter. Remboursement intégral si refus.`
+                      : `${pricing.grandDeposit}€ encaissés. ${pricing.grandRemaining > 0 ? `Règle les ${pricing.grandRemaining}€ ${remainderMethod === "cash" ? "en espèces" : "par carte"} sur place.` : "Tout est réglé."}`}
                   </p>
                   <div style={{ background: "#0f0f0f", border: "1px solid #1e1e1e", padding: 20, textAlign: "left", marginBottom: 16 }}>
-                    {[["Studio", selectedStudio.name], ["Date", selectedSlot.date], ["Horaire", selectedSlot.time], selectedFreelanceEng ? ["Ingé son", `${selectedFreelanceEng.name} (en attente)`] : null, pricing.grandRemaining > 0 ? ["Solde", `${pricing.grandRemaining}€ ${remainderMethod === "cash" ? "espèces" : "carte"}`] : null].filter(Boolean).map(([label, value]) => (
+                    {[
+                      ["Studio", selectedStudio.name],
+                      ["Date", selectedSlot.date],
+                      ["Horaire", selectedSlot.time],
+                      selectedFreelanceEng ? ["Ingé son", `${selectedFreelanceEng.name} (en attente)`] : null,
+                      pricing.grandRemaining > 0 ? ["Solde", `${pricing.grandRemaining}€ ${remainderMethod === "cash" ? "espèces" : "carte"}`] : null,
+                    ].filter(Boolean).map(([label, value]) => (
                       <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: "1px solid #111" }}>
                         <span style={{ color: "#555", fontSize: 11, letterSpacing: 2, textTransform: "uppercase", fontFamily: "DM Sans, sans-serif" }}>{label}</span>
                         <span style={{ color: "#ccc", fontSize: 13, fontFamily: "DM Sans, sans-serif" }}>{value}</span>
                       </div>
                     ))}
-                    <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 0 0" }}><span style={{ color: "#555", fontSize: 11, letterSpacing: 2, textTransform: "uppercase", fontFamily: "DM Sans, sans-serif" }}>Payé</span><span style={{ color: "#ff3b3b", fontWeight: 900, fontSize: 20 }}>{pricing.grandDeposit}€</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 0 0" }}>
+                      <span style={{ color: "#555", fontSize: 11, letterSpacing: 2, textTransform: "uppercase", fontFamily: "DM Sans, sans-serif" }}>Payé</span>
+                      <span style={{ color: "#ff3b3b", fontWeight: 900, fontSize: 20 }}>{pricing.grandDeposit}€</span>
+                    </div>
                   </div>
                   <div style={s.notifInfoBox}>📲 Rappel 24h et 1h avant ta session.</div>
                   <button style={s.ctaSecondary} onClick={() => { setView("explore"); setBookingStep(1); setSelectedSlot(null); setSelectedFreelanceEng(null); setShowEngBasket(false); }}>Explorer d'autres studios</button>
@@ -825,10 +1076,15 @@ export default function App() {
         </div>
       )}
 
+      {/* STUDIO DASHBOARD */}
       {view === "dashboard" && (
         <div style={s.page}>
           <div style={s.dashHeader}>
-            <div><div style={s.sectionTag}>MON STUDIO</div><h2 style={s.dashTitle}>{dashStudio.name}</h2><div style={{ color: "#555", fontSize: 13, fontFamily: "DM Sans, sans-serif" }}>📍 {dashStudio.location}</div></div>
+            <div>
+              <div style={s.sectionTag}>MON STUDIO</div>
+              <h2 style={s.dashTitle}>{dashStudio.name}</h2>
+              <div style={{ color: "#555", fontSize: 13, fontFamily: "DM Sans, sans-serif" }}>📍 {dashStudio.location}</div>
+            </div>
             <div style={s.dashStats}>
               <div style={s.dashStat}><div style={s.dashStatNum}>{dashStudio.bookings.length}</div><div style={s.dashStatLabel}>Sessions</div></div>
               <div style={s.dashStat}><div style={s.dashStatNum}>{dashStudio.bookings.reduce((a, b) => a + dashStudio.netPrice * b.hours, 0)}€</div><div style={s.dashStatLabel}>Revenus</div></div>
@@ -839,12 +1095,19 @@ export default function App() {
           <div style={s.palierBox}>
             <div>
               <div style={s.palierTitle}>Palier — {dashStudio.hoursLastMonth}h le mois dernier</div>
-              <div style={s.palierDesc}>Taux actuel : <strong style={{ color: currentRate === 0.10 ? "#00e5ff" : currentRate === 0.12 ? "#f5a623" : "#aaa" }}>{Math.round(currentRate * 100)}%</strong>{nextPalier && <span style={{ color: "#555" }}> · {nextPalier - dashStudio.hoursLastMonth}h pour passer à {nextPalier >= 150 ? "10%" : "12%"}</span>}</div>
+              <div style={s.palierDesc}>
+                Taux actuel : <strong style={{ color: currentRate === 0.10 ? "#00e5ff" : currentRate === 0.12 ? "#f5a623" : "#aaa" }}>{Math.round(currentRate * 100)}%</strong>
+                {nextPalier && <span style={{ color: "#555" }}> · {nextPalier - dashStudio.hoursLastMonth}h pour passer à {nextPalier >= 150 ? "10%" : "12%"}</span>}
+              </div>
               {!nextPalier && <div style={{ color: "#00e5ff", fontSize: 12, fontFamily: "DM Sans, sans-serif", marginTop: 4 }}>🏆 Palier maximum !</div>}
             </div>
             <div style={{ fontSize: 22, fontWeight: 900, color: "#00e5ff" }}>{nextPalier ? `→ ${nextPalier >= 150 ? "10%" : "12%"}` : "✓ MAX"}</div>
           </div>
-          <div style={s.tabs}>{[["infos", "⚙️ Infos"], ["slots", "📅 Créneaux"], ["bookings", "📋 Réservations"]].map(([id, label]) => (<button key={id} style={{ ...s.tab, ...(dashTab === id ? s.tabActive : {}) }} onClick={() => setDashTab(id)}>{label}</button>))}</div>
+          <div style={s.tabs}>
+            {[["infos", "⚙️ Infos"], ["slots", "📅 Créneaux"], ["bookings", "📋 Réservations"]].map(([id, label]) => (
+              <button key={id} style={{ ...s.tab, ...(dashTab === id ? s.tabActive : {}) }} onClick={() => setDashTab(id)}>{label}</button>
+            ))}
+          </div>
           {dashTab === "infos" && (
             <div style={s.dashCard}>
               <div style={s.dashSection}>
@@ -862,24 +1125,50 @@ export default function App() {
                   <div style={s.formGroup}>
                     <label style={s.formLabel}>Prix net avec ingé (€/h)</label>
                     <input style={s.input} type="number" value={dashStudio.netPrice} onChange={e => setDashStudio({ ...dashStudio, netPrice: parseInt(e.target.value) || 0 })} />
-                    <div style={{ fontSize: 11, color: "#555", fontFamily: "DM Sans, sans-serif", marginTop: 4 }}>Affiché : <strong style={{ color: "#fff" }}>{getPriceDisplayed(dashStudio.netPrice, currentRate)}€/h</strong> · Autonomie : <strong style={{ color: "#f5a623" }}>{Math.round(getPriceDisplayed(dashStudio.netPrice, currentRate) * 0.70)}€/h</strong></div>
+                    <div style={{ fontSize: 11, color: "#555", fontFamily: "DM Sans, sans-serif", marginTop: 4 }}>
+                      Affiché : <strong style={{ color: "#fff" }}>{getPriceDisplayed(dashStudio.netPrice, currentRate)}€/h</strong> · Autonomie : <strong style={{ color: "#f5a623" }}>{Math.round(getPriceDisplayed(dashStudio.netPrice, currentRate) * 0.70)}€/h</strong>
+                    </div>
                   </div>
-                  <div style={s.formGroup}><label style={s.formLabel}>Durée minimum</label><select style={s.input} value={dashStudio.minHours} onChange={e => setDashStudio({ ...dashStudio, minHours: parseInt(e.target.value) })}>{[1,2,3,4,5,6,8].map(h => <option key={h} value={h}>{h}h</option>)}</select></div>
-                  <div style={s.formGroup}><label style={s.formLabel}>Acompte (%)</label><select style={s.input} value={dashStudio.depositPercent} onChange={e => setDashStudio({ ...dashStudio, depositPercent: parseInt(e.target.value) })}>{[20,25,30,35,40,50].map(p => <option key={p} value={p}>{p}%</option>)}</select></div>
-                  <div style={s.formGroup}><label style={s.formLabel}>Mode par défaut</label><select style={s.input} value={dashStudio.defaultEngineerMode} onChange={e => setDashStudio({ ...dashStudio, defaultEngineerMode: e.target.value })}><option value="included">👤 Ingé inclus</option><option value="autonomous">🔧 Autonomie</option><option value="freelance">🎒 Ingé freelance dispo</option></select></div>
+                  <div style={s.formGroup}><label style={s.formLabel}>Durée minimum</label>
+                    <select style={s.input} value={dashStudio.minHours} onChange={e => setDashStudio({ ...dashStudio, minHours: parseInt(e.target.value) })}>
+                      {[1, 2, 3, 4, 5, 6, 8].map(h => <option key={h} value={h}>{h}h</option>)}
+                    </select>
+                  </div>
+                  <div style={s.formGroup}><label style={s.formLabel}>Acompte (%)</label>
+                    <select style={s.input} value={dashStudio.depositPercent} onChange={e => setDashStudio({ ...dashStudio, depositPercent: parseInt(e.target.value) })}>
+                      {[20, 25, 30, 35, 40, 50].map(p => <option key={p} value={p}>{p}%</option>)}
+                    </select>
+                  </div>
+                  <div style={s.formGroup}><label style={s.formLabel}>Mode par défaut</label>
+                    <select style={s.input} value={dashStudio.defaultEngineerMode} onChange={e => setDashStudio({ ...dashStudio, defaultEngineerMode: e.target.value })}>
+                      <option value="included">👤 Ingé inclus</option>
+                      <option value="autonomous">🔧 Autonomie</option>
+                      <option value="freelance">🎒 Ingé freelance dispo</option>
+                    </select>
+                  </div>
                 </div>
                 <div style={{ ...s.formGroup, marginTop: 14 }}>
                   <label style={s.formLabel}>Cash accepté ?</label>
                   <div style={s.toggleRow}>
-                    <div style={{ ...s.toggle, ...(dashStudio.acceptsCash ? s.toggleOn : {}) }} onClick={() => { if (!dashStudio.acceptsCash) setCashDisclaimerShown(true); else setDashStudio({ ...dashStudio, acceptsCash: false }); }}><div style={{ ...s.toggleDot, ...(dashStudio.acceptsCash ? s.toggleDotOn : {}) }} /></div>
+                    <div style={{ ...s.toggle, ...(dashStudio.acceptsCash ? s.toggleOn : {}) }} onClick={() => { if (!dashStudio.acceptsCash) setCashDisclaimerShown(true); else setDashStudio({ ...dashStudio, acceptsCash: false }); }}>
+                      <div style={{ ...s.toggleDot, ...(dashStudio.acceptsCash ? s.toggleDotOn : {}) }} />
+                    </div>
                     <span style={{ color: dashStudio.acceptsCash ? "#fff" : "#555", fontFamily: "DM Sans, sans-serif", fontSize: 14 }}>{dashStudio.acceptsCash ? "Oui" : "Non — en ligne uniquement"}</span>
                   </div>
                 </div>
                 {cashDisclaimerShown && !dashStudio.acceptsCash && (
                   <div style={s.disclaimerBox}>
                     <div style={s.disclaimerTitle}>⚠️ Avant d'activer le cash</div>
-                    <div style={s.disclaimerText}>• STÜDIO n'est pas responsable des litiges cash<br />• La sécurité du cash est entièrement de votre responsabilité<br />• Les sessions cash non honorées ne comptent pas dans votre palier<br />• Vous disposez d'un système d'encaissement sécurisé sur place</div>
-                    <div style={{ display: "flex", gap: 12, marginTop: 14 }}><button style={s.ctaPrimary} onClick={() => { setDashStudio({ ...dashStudio, acceptsCash: true }); setCashDisclaimerShown(false); }}>J'accepte</button><button style={s.ctaSecondary} onClick={() => setCashDisclaimerShown(false)}>Annuler</button></div>
+                    <div style={s.disclaimerText}>
+                      • STÜDIO n'est pas responsable des litiges cash<br />
+                      • La sécurité du cash est entièrement de votre responsabilité<br />
+                      • Les sessions cash non honorées ne comptent pas dans votre palier<br />
+                      • Vous disposez d'un système d'encaissement sécurisé sur place
+                    </div>
+                    <div style={{ display: "flex", gap: 12, marginTop: 14 }}>
+                      <button style={s.ctaPrimary} onClick={() => { setDashStudio({ ...dashStudio, acceptsCash: true }); setCashDisclaimerShown(false); }}>J'accepte</button>
+                      <button style={s.ctaSecondary} onClick={() => setCashDisclaimerShown(false)}>Annuler</button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -894,11 +1183,37 @@ export default function App() {
               <div style={s.dashSection}>
                 <div style={s.dashSectionTitle}>Ajouter un créneau</div>
                 <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "flex-end" }}>
-                  <div style={s.formGroup}><label style={s.formLabel}>Jour</label><select style={s.input} value={newSlot.date} onChange={e => setNewSlot({ ...newSlot, date: e.target.value })}>{DAYS.map(d => <option key={d} value={d}>{d}</option>)}</select></div>
-                  <div style={s.formGroup}><label style={s.formLabel}>Début</label><select style={s.input} value={newSlot.startH} onChange={e => setNewSlot({ ...newSlot, startH: e.target.value })}>{Array.from({length:24},(_,i)=>i).map(h => <option key={h} value={h}>{String(h).padStart(2,"0")}h</option>)}</select></div>
-                  <div style={s.formGroup}><label style={s.formLabel}>Fin</label><select style={s.input} value={newSlot.endH} onChange={e => setNewSlot({ ...newSlot, endH: e.target.value })}>{Array.from({length:24},(_,i)=>i).map(h => <option key={h} value={h}>{String(h).padStart(2,"0")}h</option>)}</select></div>
-                  <div style={s.formGroup}><label style={s.formLabel}>Exception ?</label><select style={s.input} value={newSlot.engineerMode || ""} onChange={e => setNewSlot({ ...newSlot, engineerMode: e.target.value || null })}><option value="">Défaut ({ENG_MODE_LABELS[dashStudio.defaultEngineerMode]})</option><option value="included">👤 Ingé inclus</option><option value="autonomous">🔧 Autonomie</option><option value="freelance">🎒 Ingé freelance</option></select></div>
-                  <button style={s.ctaPrimary} onClick={() => { const hours = parseInt(newSlot.endH) - parseInt(newSlot.startH); if (hours <= 0) return; const slot = { id: Date.now(), date: newSlot.date, time: `${newSlot.startH}h - ${newSlot.endH}h`, hours, available: true, engineerMode: newSlot.engineerMode || null, hoursUntil: 48 }; const updated = { ...dashStudio, slots: [...dashStudio.slots, slot] }; setDashStudio(updated); setStudios(studios.map(st => st.id === dashStudio.id ? updated : st)); }}>+ Ajouter</button>
+                  <div style={s.formGroup}><label style={s.formLabel}>Jour</label>
+                    <select style={s.input} value={newSlot.date} onChange={e => setNewSlot({ ...newSlot, date: e.target.value })}>
+                      {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                  </div>
+                  <div style={s.formGroup}><label style={s.formLabel}>Début</label>
+                    <select style={s.input} value={newSlot.startH} onChange={e => setNewSlot({ ...newSlot, startH: e.target.value })}>
+                      {Array.from({ length: 24 }, (_, i) => i).map(h => <option key={h} value={h}>{String(h).padStart(2, "0")}h</option>)}
+                    </select>
+                  </div>
+                  <div style={s.formGroup}><label style={s.formLabel}>Fin</label>
+                    <select style={s.input} value={newSlot.endH} onChange={e => setNewSlot({ ...newSlot, endH: e.target.value })}>
+                      {Array.from({ length: 24 }, (_, i) => i).map(h => <option key={h} value={h}>{String(h).padStart(2, "0")}h</option>)}
+                    </select>
+                  </div>
+                  <div style={s.formGroup}><label style={s.formLabel}>Exception ?</label>
+                    <select style={s.input} value={newSlot.engineerMode || ""} onChange={e => setNewSlot({ ...newSlot, engineerMode: e.target.value || null })}>
+                      <option value="">Défaut ({ENG_MODE_LABELS[dashStudio.defaultEngineerMode]})</option>
+                      <option value="included">👤 Ingé inclus</option>
+                      <option value="autonomous">🔧 Autonomie</option>
+                      <option value="freelance">🎒 Ingé freelance</option>
+                    </select>
+                  </div>
+                  <button style={s.ctaPrimary} onClick={() => {
+                    const hours = parseInt(newSlot.endH) - parseInt(newSlot.startH);
+                    if (hours <= 0) return;
+                    const slot = { id: Date.now(), date: newSlot.date, time: `${newSlot.startH}h - ${newSlot.endH}h`, hours, available: true, engineerMode: newSlot.engineerMode || null, hoursUntil: 48 };
+                    const updated = { ...dashStudio, slots: [...dashStudio.slots, slot] };
+                    setDashStudio(updated);
+                    setStudios(studios.map(st => st.id === dashStudio.id ? updated : st));
+                  }}>+ Ajouter</button>
                 </div>
               </div>
               <div style={s.dashSection}>
@@ -909,10 +1224,19 @@ export default function App() {
                     const slotPrice = getSlotPrice(dashStudio, slot);
                     return (
                       <div key={slot.id} style={s.slotListItem}>
-                        <div><div style={{ color: "#fff", fontWeight: 700 }}>{slot.date} · {slot.time}</div><div style={{ color: "#555", fontSize: 12, fontFamily: "DM Sans, sans-serif" }}>{slot.hours}h · {slot.hours * slotPrice}€ · <span style={{ color: ENG_MODE_COLORS[mode] }}>{ENG_MODE_LABELS[mode]}</span></div></div>
+                        <div>
+                          <div style={{ color: "#fff", fontWeight: 700 }}>{slot.date} · {slot.time}</div>
+                          <div style={{ color: "#555", fontSize: 12, fontFamily: "DM Sans, sans-serif" }}>
+                            {slot.hours}h · {slot.hours * slotPrice}€ · <span style={{ color: ENG_MODE_COLORS[mode] }}>{ENG_MODE_LABELS[mode]}</span>
+                          </div>
+                        </div>
                         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
                           <div style={{ ...s.slotStatus, ...(slot.available ? s.slotStatusOk : s.slotStatusFull) }}>{slot.available ? "Dispo" : "Complet"}</div>
-                          <button style={s.removeBtn} onClick={() => { const updated = { ...dashStudio, slots: dashStudio.slots.filter(sl => sl.id !== slot.id) }; setDashStudio(updated); setStudios(studios.map(st => st.id === dashStudio.id ? updated : st)); }}>✕</button>
+                          <button style={s.removeBtn} onClick={() => {
+                            const updated = { ...dashStudio, slots: dashStudio.slots.filter(sl => sl.id !== slot.id) };
+                            setDashStudio(updated);
+                            setStudios(studios.map(st => st.id === dashStudio.id ? updated : st));
+                          }}>✕</button>
                         </div>
                       </div>
                     );
@@ -927,8 +1251,15 @@ export default function App() {
               {dashStudio.bookings.length === 0 && <div style={{ color: "#555", fontFamily: "DM Sans, sans-serif", padding: "20px 0" }}>Aucune réservation.</div>}
               {dashStudio.bookings.map(booking => (
                 <div key={booking.id} style={s.bookingCard}>
-                  <div><div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 4 }}>🎤 {booking.artist}</div><div style={{ color: "#aaa", fontSize: 13, fontFamily: "DM Sans, sans-serif" }}>{booking.date} · {booking.time} · {booking.hours}h</div></div>
-                  <div style={{ textAlign: "right" }}><div style={{ fontSize: 20, fontWeight: 900, color: "#00e5ff" }}>{dashStudio.netPrice * booking.hours}€ net</div><span style={s.cashBadge}>{booking.remainderMethod === "cash" ? "💵 Cash" : "💳 Carte"}</span><div style={{ fontSize: 11, color: "#00e5ff", marginTop: 6 }}>✓ Confirmé</div></div>
+                  <div>
+                    <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 4 }}>🎤 {booking.artist}</div>
+                    <div style={{ color: "#aaa", fontSize: 13, fontFamily: "DM Sans, sans-serif" }}>{booking.date} · {booking.time} · {booking.hours}h</div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: 20, fontWeight: 900, color: "#00e5ff" }}>{dashStudio.netPrice * booking.hours}€ net</div>
+                    <span style={s.cashBadge}>{booking.remainderMethod === "cash" ? "💵 Cash" : "💳 Carte"}</span>
+                    <div style={{ fontSize: 11, color: "#00e5ff", marginTop: 6 }}>✓ Confirmé</div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -936,6 +1267,7 @@ export default function App() {
         </div>
       )}
 
+      {/* ENGINEER DASHBOARD */}
       {view === "engdashboard" && (
         <div style={s.page}>
           <div style={s.dashHeader}>
@@ -943,7 +1275,9 @@ export default function App() {
               <div style={s.sectionTag}>MON PROFIL INGÉ SON</div>
               <h2 style={s.dashTitle}>{engProfile.name}</h2>
               <div style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 6 }}>
-                <div style={{ ...s.engStatusBadge, ...(engProfile.status === "freelance" ? s.engStatusFreelance : s.engStatusStudio) }}>{engProfile.status === "freelance" ? "🎒 Freelance" : "🏢 Studio fixe"}</div>
+                <div style={{ ...s.engStatusBadge, ...(engProfile.status === "freelance" ? s.engStatusFreelance : s.engStatusStudio) }}>
+                  {engProfile.status === "freelance" ? "🎒 Freelance" : "🏢 Studio fixe"}
+                </div>
                 <button style={s.switchStatusBtn} onClick={() => setEngProfile({ ...engProfile, status: engProfile.status === "freelance" ? "studio" : "freelance" })}>Changer</button>
               </div>
             </div>
@@ -955,6 +1289,7 @@ export default function App() {
             </div>
           </div>
 
+          {/* DEMANDES EN ATTENTE */}
           {engProfile.pendingRequests?.filter(r => r.status === "pending").length > 0 && (
             <div style={s.pendingBox}>
               <div style={s.pendingTitle}>🔔 Demandes en attente</div>
@@ -962,7 +1297,12 @@ export default function App() {
                 const delay = getEngResponseDelay(req.hoursUntil);
                 return (
                   <div key={req.id} style={s.pendingCard}>
-                    <div><div style={{ fontWeight: 700, color: "#fff", fontSize: 15 }}>🎤 {req.artist}</div><div style={{ color: "#aaa", fontSize: 13, fontFamily: "DM Sans, sans-serif", marginTop: 2 }}>{req.date} · {req.time} · {req.hours}h</div><div style={{ color: "#666", fontSize: 12, fontFamily: "DM Sans, sans-serif", marginTop: 2 }}>📍 {req.location}</div><div style={{ fontSize: 11, color: "#ff3b3b", marginTop: 4 }}>⏱ {delay.label} pour répondre</div></div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: "#fff", fontSize: 15 }}>🎤 {req.artist}</div>
+                      <div style={{ color: "#aaa", fontSize: 13, fontFamily: "DM Sans, sans-serif", marginTop: 2 }}>{req.date} · {req.time} · {req.hours}h</div>
+                      <div style={{ color: "#666", fontSize: 12, fontFamily: "DM Sans, sans-serif", marginTop: 2 }}>📍 {req.location}</div>
+                      <div style={{ fontSize: 11, color: "#ff3b3b", marginTop: 4 }}>⏱ {delay.label} pour répondre</div>
+                    </div>
                     <div style={{ display: "flex", gap: 10, flexShrink: 0 }}>
                       <button style={{ ...s.ctaPrimary, padding: "10px 20px", fontSize: 12 }} onClick={() => handleEngRequestAction(req.id, "accepted")}>✓ Accepter</button>
                       <button style={{ ...s.ctaSecondary, padding: "10px 20px", fontSize: 12 }} onClick={() => handleEngRequestAction(req.id, "refused")}>✕ Refuser</button>
@@ -973,7 +1313,11 @@ export default function App() {
             </div>
           )}
 
-          <div style={s.tabs}>{[["profil", "👤 Profil"], ["sessions", "🎙️ Sessions"], ["dispo", "📅 Dispos"]].map(([id, label]) => (<button key={id} style={{ ...s.tab, ...(engTab === id ? s.tabActive : {}) }} onClick={() => setEngTab(id)}>{label}</button>))}</div>
+          <div style={s.tabs}>
+            {[["profil", "👤 Profil"], ["sessions", "🎙️ Sessions"], ["dispo", "📅 Dispos"]].map(([id, label]) => (
+              <button key={id} style={{ ...s.tab, ...(engTab === id ? s.tabActive : {}) }} onClick={() => setEngTab(id)}>{label}</button>
+            ))}
+          </div>
 
           {engTab === "profil" && (
             <div style={s.dashCard}>
@@ -981,26 +1325,69 @@ export default function App() {
                 <div style={s.dashSectionTitle}>Informations</div>
                 <div style={s.formGrid}>
                   <div style={s.formGroup}><label style={s.formLabel}>Nom / Pseudo</label><input style={s.input} value={engProfile.name} onChange={e => setEngProfile({ ...engProfile, name: e.target.value })} /></div>
-                  {engProfile.status === "freelance" && <div style={s.formGroup}><label style={s.formLabel}>Tarif net (€/h)</label><input style={s.input} type="number" value={engProfile.rate} onChange={e => setEngProfile({ ...engProfile, rate: parseInt(e.target.value) || 0 })} /><div style={{ fontSize: 11, color: "#555", fontFamily: "DM Sans, sans-serif", marginTop: 4 }}>Affiché : <strong style={{ color: "#fff" }}>{getPriceDisplayed(engProfile.rate, 0.06)}€/h</strong></div></div>}
+                  {engProfile.status === "freelance" && (
+                    <div style={s.formGroup}>
+                      <label style={s.formLabel}>Tarif net (€/h)</label>
+                      <input style={s.input} type="number" value={engProfile.rate} onChange={e => setEngProfile({ ...engProfile, rate: parseInt(e.target.value) || 0 })} />
+                      <div style={{ fontSize: 11, color: "#555", fontFamily: "DM Sans, sans-serif", marginTop: 4 }}>
+                        Affiché : <strong style={{ color: "#fff" }}>{getPriceDisplayed(engProfile.rate, 0.06)}€/h</strong>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 {engProfile.status === "freelance" && (
                   <div style={{ ...s.formGrid, marginTop: 14 }}>
-                    <div style={s.formGroup}><label style={s.formLabel}>Ville de base</label><input style={s.input} value={engProfile.city} onChange={e => setEngProfile({ ...engProfile, city: e.target.value })} /></div>
-                    <div style={s.formGroup}><label style={s.formLabel}>Rayon de déplacement</label><select style={s.input} value={engProfile.radiusKm} onChange={e => setEngProfile({ ...engProfile, radiusKm: parseInt(e.target.value) })}>{RADIUS_OPTIONS.map(r => <option key={r} value={r}>{r} km</option>)}</select></div>
-                    <div style={s.formGroup}><label style={s.formLabel}>Délai minimum avant session</label><select style={s.input} value={engProfile.minNoticeHours} onChange={e => setEngProfile({ ...engProfile, minNoticeHours: parseInt(e.target.value) })}>{MIN_NOTICE_OPTIONS.map(o => <option key={o.h} value={o.h}>{o.label}</option>)}</select><div style={{ fontSize: 11, color: "#555", fontFamily: "DM Sans, sans-serif", marginTop: 4 }}>Tu n'apparaîtras pas pour les sessions trop proches.</div></div>
+                    <div style={s.formGroup}>
+                      <label style={s.formLabel}>Ville de base</label>
+                      <input style={s.input} value={engProfile.city} onChange={e => setEngProfile({ ...engProfile, city: e.target.value })} />
+                    </div>
+                    <div style={s.formGroup}>
+                      <label style={s.formLabel}>Rayon de déplacement</label>
+                      <select style={s.input} value={engProfile.radiusKm} onChange={e => setEngProfile({ ...engProfile, radiusKm: parseInt(e.target.value) })}>
+                        {RADIUS_OPTIONS.map(r => <option key={r} value={r}>{r} km</option>)}
+                      </select>
+                    </div>
+                    <div style={s.formGroup}>
+                      <label style={s.formLabel}>Délai minimum avant session</label>
+                      <select style={s.input} value={engProfile.minNoticeHours} onChange={e => setEngProfile({ ...engProfile, minNoticeHours: parseInt(e.target.value) })}>
+                        {MIN_NOTICE_OPTIONS.map(o => <option key={o.h} value={o.h}>{o.label}</option>)}
+                      </select>
+                      <div style={{ fontSize: 11, color: "#555", fontFamily: "DM Sans, sans-serif", marginTop: 4 }}>Tu n'apparaîtras pas pour les sessions trop proches.</div>
+                    </div>
                   </div>
                 )}
-                <div style={{ marginTop: 14 }}><label style={s.formLabel}>Bio</label><textarea style={{ ...s.input, height: 80, resize: "none", marginTop: 8 }} value={engProfile.bio} onChange={e => setEngProfile({ ...engProfile, bio: e.target.value })} /></div>
+                <div style={{ marginTop: 14 }}>
+                  <label style={s.formLabel}>Bio</label>
+                  <textarea style={{ ...s.input, height: 80, resize: "none", marginTop: 8 }} value={engProfile.bio} onChange={e => setEngProfile({ ...engProfile, bio: e.target.value })} />
+                </div>
               </div>
               <div style={s.dashSection}>
                 <div style={s.dashSectionTitle}>Spécialités</div>
-                <div style={s.tagGrid}>{SPECIALTIES.map(sp => (<div key={sp} style={{ ...s.tagToggle, ...(engProfile.specialty.includes(sp) ? s.tagToggleOn : {}) }} onClick={() => { const specialty = engProfile.specialty.includes(sp) ? engProfile.specialty.filter(x => x !== sp) : [...engProfile.specialty, sp]; setEngProfile({ ...engProfile, specialty }); }}>{sp} {engProfile.specialty.includes(sp) ? "✓" : "+"}</div>))}</div>
+                <div style={s.tagGrid}>
+                  {SPECIALTIES.map(sp => (
+                    <div key={sp} style={{ ...s.tagToggle, ...(engProfile.specialty.includes(sp) ? s.tagToggleOn : {}) }}
+                      onClick={() => { const specialty = engProfile.specialty.includes(sp) ? engProfile.specialty.filter(x => x !== sp) : [...engProfile.specialty, sp]; setEngProfile({ ...engProfile, specialty }); }}>
+                      {sp} {engProfile.specialty.includes(sp) ? "✓" : "+"}
+                    </div>
+                  ))}
+                </div>
               </div>
               <div style={s.dashSection}>
                 <div style={s.dashSectionTitle}>Genres maîtrisés</div>
-                <div style={s.tagGrid}>{GENRES.map(g => (<div key={g} style={{ ...s.tagToggle, ...(engProfile.genres.includes(g) ? s.tagToggleOn : {}) }} onClick={() => { const genres = engProfile.genres.includes(g) ? engProfile.genres.filter(x => x !== g) : [...engProfile.genres, g]; setEngProfile({ ...engProfile, genres }); }}>{g} {engProfile.genres.includes(g) ? "✓" : "+"}</div>))}</div>
+                <div style={s.tagGrid}>
+                  {GENRES.map(g => (
+                    <div key={g} style={{ ...s.tagToggle, ...(engProfile.genres.includes(g) ? s.tagToggleOn : {}) }}
+                      onClick={() => { const genres = engProfile.genres.includes(g) ? engProfile.genres.filter(x => x !== g) : [...engProfile.genres, g]; setEngProfile({ ...engProfile, genres }); }}>
+                      {g} {engProfile.genres.includes(g) ? "✓" : "+"}
+                    </div>
+                  ))}
+                </div>
               </div>
-              {engProfile.status === "freelance" && <div style={{ ...s.simBox, marginBottom: 20 }}><div style={{ ...s.simRow, color: "#555", fontSize: 12 }}>💡 Gratuit. 6% sur tes sessions STÜDIO uniquement. Virement auto après chaque session.</div></div>}
+              {engProfile.status === "freelance" && (
+                <div style={{ ...s.simBox, marginBottom: 20 }}>
+                  <div style={{ ...s.simRow, color: "#555", fontSize: 12 }}>💡 Gratuit. 6% sur tes sessions STÜDIO uniquement. Virement auto après chaque session.</div>
+                </div>
+              )}
               <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
                 <button style={s.ctaPrimary} onClick={() => { setEngSavedMsg(true); setTimeout(() => setEngSavedMsg(false), 2000); }}>Sauvegarder</button>
                 {engSavedMsg && <span style={{ color: "#00e5ff", fontSize: 13, fontFamily: "DM Sans, sans-serif" }}>✓ Sauvegardé !</span>}
@@ -1012,8 +1399,31 @@ export default function App() {
             <div style={s.dashCard}>
               <div style={s.dashSectionTitle}>Sessions</div>
               {engProfile.sessions.length === 0 && <div style={{ color: "#555", fontFamily: "DM Sans, sans-serif", padding: "20px 0" }}>Aucune session pour l'instant.</div>}
-              {engProfile.sessions.map(session => (<div key={session.id} style={s.bookingCard}><div><div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 4 }}>🎤 {session.artist}</div><div style={{ color: "#aaa", fontSize: 13, fontFamily: "DM Sans, sans-serif" }}>{session.date} · {session.time}</div><div style={{ color: "#555", fontSize: 12 }}>📍 {session.location} · {session.hours}h</div></div><div style={{ textAlign: "right" }}><div style={{ fontSize: 18, fontWeight: 900, color: "#00e5ff" }}>{engProfile.rate * session.hours}€ net</div><div style={{ fontSize: 11, color: "#555", marginTop: 4, fontFamily: "DM Sans, sans-serif" }}>Virement auto</div><div style={{ fontSize: 11, color: "#00e5ff", marginTop: 4 }}>✓ Confirmé</div></div></div>))}
-              {engProfile.pendingRequests?.filter(r => r.status !== "pending").map(req => (<div key={req.id} style={{ ...s.bookingCard, opacity: 0.6 }}><div><div style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>🎤 {req.artist}</div><div style={{ color: "#aaa", fontSize: 12, fontFamily: "DM Sans, sans-serif" }}>{req.date} · {req.time}</div></div><div style={{ fontSize: 12, color: req.status === "accepted" ? "#00e5ff" : "#ff3b3b", fontWeight: 700 }}>{req.status === "accepted" ? "✓ Accepté" : "✕ Refusé"}</div></div>))}
+              {engProfile.sessions.map(session => (
+                <div key={session.id} style={s.bookingCard}>
+                  <div>
+                    <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 4 }}>🎤 {session.artist}</div>
+                    <div style={{ color: "#aaa", fontSize: 13, fontFamily: "DM Sans, sans-serif" }}>{session.date} · {session.time}</div>
+                    <div style={{ color: "#555", fontSize: 12 }}>📍 {session.location} · {session.hours}h</div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: 18, fontWeight: 900, color: "#00e5ff" }}>{engProfile.rate * session.hours}€ net</div>
+                    <div style={{ fontSize: 11, color: "#555", marginTop: 4, fontFamily: "DM Sans, sans-serif" }}>Virement auto</div>
+                    <div style={{ fontSize: 11, color: "#00e5ff", marginTop: 4 }}>✓ Confirmé</div>
+                  </div>
+                </div>
+              ))}
+              {engProfile.pendingRequests?.filter(r => r.status !== "pending").map(req => (
+                <div key={req.id} style={{ ...s.bookingCard, opacity: 0.6 }}>
+                  <div>
+                    <div style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>🎤 {req.artist}</div>
+                    <div style={{ color: "#aaa", fontSize: 12, fontFamily: "DM Sans, sans-serif" }}>{req.date} · {req.time}</div>
+                  </div>
+                  <div style={{ fontSize: 12, color: req.status === "accepted" ? "#00e5ff" : "#ff3b3b", fontWeight: 700 }}>
+                    {req.status === "accepted" ? "✓ Accepté" : "✕ Refusé"}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
@@ -1022,17 +1432,37 @@ export default function App() {
               <div style={s.dashSection}>
                 <div style={s.dashSectionTitle}>Ajouter une disponibilité</div>
                 <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "flex-end" }}>
-                  <div style={s.formGroup}><label style={s.formLabel}>Jour</label><select style={s.input} value={newDispo.date} onChange={e => setNewDispo({ ...newDispo, date: e.target.value })}>{DAYS.map(d => <option key={d} value={d}>{d}</option>)}</select></div>
-                  <div style={s.formGroup}><label style={s.formLabel}>De</label><select style={s.input} value={newDispo.startH} onChange={e => setNewDispo({ ...newDispo, startH: e.target.value })}>{Array.from({length:24},(_,i)=>i).map(h => <option key={h} value={h}>{String(h).padStart(2,"0")}h</option>)}</select></div>
-                  <div style={s.formGroup}><label style={s.formLabel}>À</label><select style={s.input} value={newDispo.endH} onChange={e => setNewDispo({ ...newDispo, endH: e.target.value })}>{Array.from({length:24},(_,i)=>i).map(h => <option key={h} value={h}>{String(h).padStart(2,"00")}h</option>)}</select></div>
-                  <button style={s.ctaPrimary} onClick={() => { if (parseInt(newDispo.endH) <= parseInt(newDispo.startH)) return; setEngProfile({ ...engProfile, availabilities: [...engProfile.availabilities, { id: Date.now(), date: newDispo.date, time: `${newDispo.startH}h - ${newDispo.endH}h`, hoursUntil: 48 }] }); }}>+ Ajouter</button>
+                  <div style={s.formGroup}><label style={s.formLabel}>Jour</label>
+                    <select style={s.input} value={newDispo.date} onChange={e => setNewDispo({ ...newDispo, date: e.target.value })}>
+                      {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                  </div>
+                  <div style={s.formGroup}><label style={s.formLabel}>De</label>
+                    <select style={s.input} value={newDispo.startH} onChange={e => setNewDispo({ ...newDispo, startH: e.target.value })}>
+                      {Array.from({ length: 24 }, (_, i) => i).map(h => <option key={h} value={h}>{String(h).padStart(2, "0")}h</option>)}
+                    </select>
+                  </div>
+                  <div style={s.formGroup}><label style={s.formLabel}>À</label>
+                    <select style={s.input} value={newDispo.endH} onChange={e => setNewDispo({ ...newDispo, endH: e.target.value })}>
+                      {Array.from({ length: 24 }, (_, i) => i).map(h => <option key={h} value={h}>{String(h).padStart(2, "00")}h</option>)}
+                    </select>
+                  </div>
+                  <button style={s.ctaPrimary} onClick={() => {
+                    if (parseInt(newDispo.endH) <= parseInt(newDispo.startH)) return;
+                    setEngProfile({ ...engProfile, availabilities: [...engProfile.availabilities, { id: Date.now(), date: newDispo.date, time: `${newDispo.startH}h - ${newDispo.endH}h`, hoursUntil: 48 }] });
+                  }}>+ Ajouter</button>
                 </div>
               </div>
               <div style={s.dashSection}>
                 <div style={s.dashSectionTitle}>Mes disponibilités ({engProfile.availabilities.length})</div>
                 <div style={s.slotList}>
                   {engProfile.availabilities.length === 0 && <div style={{ color: "#555", fontFamily: "DM Sans, sans-serif" }}>Aucune dispo.</div>}
-                  {engProfile.availabilities.map((dispo, i) => (<div key={i} style={s.slotListItem}><div style={{ color: "#fff", fontWeight: 700 }}>{dispo.date} · {dispo.time}</div><button style={s.removeBtn} onClick={() => setEngProfile({ ...engProfile, availabilities: engProfile.availabilities.filter((_, idx) => idx !== i) })}>✕</button></div>))}
+                  {engProfile.availabilities.map((dispo, i) => (
+                    <div key={i} style={s.slotListItem}>
+                      <div style={{ color: "#fff", fontWeight: 700 }}>{dispo.date} · {dispo.time}</div>
+                      <button style={s.removeBtn} onClick={() => setEngProfile({ ...engProfile, availabilities: engProfile.availabilities.filter((_, idx) => idx !== i) })}>✕</button>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1043,6 +1473,7 @@ export default function App() {
   );
 }
 
+// ─── STYLES ───────────────────────────────────────────────────────────────────
 const s = {
   root: { minHeight: "100vh", background: "#080808", color: "#e8e8e8", fontFamily: "'Bebas Neue', 'DM Sans', sans-serif", position: "relative", overflowX: "hidden" },
   noise: { position: "fixed", inset: 0, backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")`, pointerEvents: "none", zIndex: 0, opacity: 0.5 },
